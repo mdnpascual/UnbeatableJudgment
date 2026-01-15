@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MelonLoader;
 using HarmonyLib;
 using Rhythm;
-using TMPro;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+using UnityEngine;
+using DG.Tweening;
 
 namespace UnbeatableJudgment.Patches
 {
@@ -27,6 +23,24 @@ namespace UnbeatableJudgment.Patches
                 {
                     UnbeatableJudgment.Core.PushJudgementOffset(float.Parse(scoreSplit[1]) * -1);
                 } 
+            }
+        }
+
+        [HarmonyPatch(typeof(DefaultNote), "Start")]
+        public static class Patch_DefaultNote_Start
+        {
+            private static void Prefix(DefaultNote __instance)
+            {
+                __instance.transform.DOScale(new Vector3(UnbeatableJudgment.Core.nSize, UnbeatableJudgment.Core.nSize, UnbeatableJudgment.Core.nSize), 0.01f);
+            }
+        }
+
+        [HarmonyPatch(typeof(DoubleNote), "Start")]
+        public static class Patch_DoubleNote_Start
+        {
+            private static void Prefix(HoldNote __instance)
+            {
+                __instance.transform.DOScale(new Vector3(UnbeatableJudgment.Core.nSize, UnbeatableJudgment.Core.nSize, UnbeatableJudgment.Core.nSize), 0.01f);
             }
         }
     }

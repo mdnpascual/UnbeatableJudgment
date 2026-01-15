@@ -30,6 +30,21 @@ namespace UnbeatableJudgment
         private static GUIStyle _textStyle;
         private static Material _glMat;
 
+        private static MelonPreferences_Category category;
+        private static MelonPreferences_Entry<float> noteSize;
+        public static float nSize;
+
+        public static bool debug = false;
+
+        public override void OnInitializeMelon()
+        {
+            category = MelonPreferences.CreateCategory("UnbeatableJudgment");
+            category.SetFilePath("UserData/UnbeatableJudgment.cfg");
+
+            noteSize = category.CreateEntry("NoteSize", 0.85f, "Note Size");
+            nSize = noteSize.Value;
+        }
+
         public static void PushJudgementLine(string line)
         {
             lock (_logLock)
@@ -122,6 +137,11 @@ namespace UnbeatableJudgment
                     _last50.Clear(); _sumLast50 = 0f;
                     _full.Clear(); _sumFull = 0f;
                 }
+            }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.P))
+            {
+                debug = !debug;
+                Melon<Core>.Logger.Msg($"Debug: {debug}");
             }
         }
 
